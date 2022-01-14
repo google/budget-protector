@@ -38,7 +38,6 @@ var DRY_RUN = true;
 var ACCOUNT_IDS = ['000-000-0000', '000-000-0001']
 // SHEET_NAME is optional; if not specified, the active sheet is used.
 var SHEET_NAME = null;
-// Optional settings that can be tweaked per-client
 var UNDERSPEND_THRESHOLD = 0.5;
 // How to calculate the daily budget of a campaign on its last day.
 // Possible values:

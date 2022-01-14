@@ -12,6 +12,7 @@ underspend. So everyone's happy :-)
 
 # How to set-up
 1. Create a Google Ads script
+1. Set it to run every day early morning
 1. Copy all .gs files
 1. Modify configuration in config.gs
 1. Create a copy of this [spreadsheet](https://docs.google.com/spreadsheets/d/1FFFPRRnRs3AXbbJXPaa4ct_L13Rv8a3pA-hKQO4wH5M/edit?usp=sharing) then follow [How it Works](#how-it-works)
@@ -50,13 +51,13 @@ See this screenshot for some example values:
 
 ## Pausing Campaigns
 
-*Budget Protector* errs on the side of preventing spending (to avoid upsetting
-clients). After the end date of a campaign passes, *Budget Protector* will pause
-the campaign to ensure that it doesn't spend, even if the end date of the
-campaign is manually extended (we have had clients/agencies surprised that
-campaigns automatically resumed spending in this case). It will also pause a
-campaign if the total budget is spent before the end date is reached. But it
-will **never** *unpause* a campaign.
+*Budget Protector* errs on the side of preventing spending. After the end date
+of a campaign passes, *Budget Protector* will pause the campaign to ensure that
+it doesn't spend, even if the end date of the campaign is manually extended (we
+have had clients/agencies surprised that campaigns automatically resumed
+spending in this case). It will also pause a campaign if the total budget is
+spent before the end date is reached. But it will **never** *unpause* a
+campaign.
 
 IMPORTANT: If a campaign is paused, *you* must unpause it in order to make it
 spend; *Budget Protector* will never unpause it for you.
@@ -83,7 +84,8 @@ Protector* cannot fix the problem. It requires manual intervention.
 which is the most common solution to underspending. But it *will* highlight
 underspending campaigns in the **Status** column so you can take action. By
 default, it calls out campaigns that are spending less than *half* of their
-daily budget. If you'd like a higher or lower threshold, you can request it.
+daily budget. If you'd like a higher or lower threshold, you have to modify
+**UNDERSPEND_THRESHOLD** in the config.
 
 ## Shared Budgets
 
@@ -98,23 +100,21 @@ that use that shared budget.
 clear start- and end dates. However, it does have special support for Always On
 campaigns as well (with some caveats).
 
-## Test Mode/Activation
+## Test Mode
 
-When setting up *Budget Protector* for a new client, the spreadsheet is always
-initially created in **Test Mode**. In Test Mode, *Budget Protector* will show
-its recommended daily budget in the spreadsheet, but it won't actually change
-the budget in the account. It also won't set the end dates of or pause any
-campaigns.
-
-Only after receiveing confirmation that the suggested budgets are correct, will
-gTech activate the spreadsheet and allow *Budget Protector* to modify the account.
+Whenever the **DRY_RUN** config is set to *true*, *Budget Protector* is in
+**Test Mode**. In Test Mode, *Budget Protector* will show its recommended daily
+budget in the spreadsheet, but it won't actually change the budget in the
+account. It also won't set the end dates of or pause any campaigns.
+With the help of the logger, you can check the "Dry runs".
 
 ## Daily Run
 
-*Budget Protector* runs every day in the early morning. It is only at that time
+Assuming *Budget Protector* has been set to run daily, it is only at that time
 that *Budget Protector* will notice that an account has fully spent its total
 budget or not, and decide to pause a campaign. It will **not** notice that the
-total budget was spent in the afternoon or evening.
+total budget was spent after that (in the afternoon or evening if it runs on
+mornings).
 
 IMPORTANT: If you are very concerned about even slight overspend on the last day
 of a campaign, you will need to monitor the campaign on that day yourself.
@@ -127,8 +127,8 @@ total budget.
 
 To be concrete: for a 30-day campaign with a total budget of $30k, without
 *Budget Protector*, Google Ads could overspend $6,000 (20% of $30k) without
-recompense for your client; with *Budget Protector*, it should be limited to
-$200 (20% of $1k). That's less than 0.7% of the total budget!
+recompense for you; with *Budget Protector*, it should be limited to $200 (20%
+of $1k). That's less than 0.7% of the total budget!
 
 ## Manual Account Changes
 
