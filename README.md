@@ -36,7 +36,7 @@ To-Date** column. It will set the end date of the campaign in the account to
 match what you entered in the spreadsheet. It will calculate how much remains
 from the Total Budget, and enter this in the **Budget Remaining** column.
 Finally, it will divide that amount by the number of days left until the End
-Date, possibly adjusted if yesterday's daily budget overspent (see[below](
+Date, possibly adjusted if yesterday's daily budget overspent (see [below](
 #overspend-adjustment)), and write that to the **Est. Daily Budget** column.
 
 If any errors occurred (for example, if no campaign with the specified name was
@@ -47,7 +47,7 @@ even though the end date has not passed), then a message will be written to the
 
 See this screenshot for some example values:
 
-![Screenshot](https://screenshot.googleplex.com/OakGKCFNeL9.png)
+![Screenshot](sample_values.png)
 
 ## Pausing Campaigns
 
