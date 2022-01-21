@@ -17,7 +17,7 @@
 function main() {
   var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
   initSpreadsheet(spreadsheet);
-  var cid2sheet = getCidToSheetMapping_(spreadsheet);
+  var cid2sheet = getCidToSheetMapping(spreadsheet);
   var accountIterator = getAccountIterator();
 
   while (accountIterator.hasNext()) {
@@ -47,6 +47,37 @@ function getAccountIterator() {
     return AdsManagerApp.accounts().get(); 
   }
   return AdsManagerApp.accounts().withIds(ACCOUNT_IDS).get();
+}
+
+function getCidToSheetMapping(targetSpreadsheet) {
+  var cid2sheet = {};
+  targetSpreadsheet.getSheets().forEach(function(sheet) {
+    var name = sheet.getName();
+    var cid = extractCidFromSheetName(name);
+    if (cid) {
+      if (cid in cid2sheet) {
+        throw new Error(
+            'Two sheets for the same CID: ' + JSON.stringify(cid2sheet[cid]) +
+            ' and ' + JSON.stringify(name));
+      }
+      cid2sheet[cid] = name;
+    } else {
+      Logger.log('No CID found in sheet name: %s', name);
+    }
+  });
+  return cid2sheet;
+}
+
+function extractCidFromSheetName(name) {
+  if (/^[0-9]+-[0-9]+-[0-9]+$/.test(name)) {
+    return name;
+  }
+
+  var match = name.match(/\(([0-9]+-[0-9]+-[0-9]+)\) *$/);
+  if (!match) {
+    return null;
+  }
+  return match[1];
 }
 
 function runCustomer(cid) {
