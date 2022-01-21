@@ -396,10 +396,10 @@ function yesterdaysDate8() {
 }
 
 function setCampaignEndDate(campaign, endDate) {
-  Logger.log(
+  Logger.log(Utilities.formatString(
       'Changing end date of campaign %s (%s) from %s to %s', campaign.getName(),
       campaign.getId(), formatDate8(scriptyDateToDate8(campaign.getEndDate())),
-      formatDate8(endDate));
+      formatDate8(endDate)));
   if (!isDryRun()) {
     campaign.setEndDate(endDate);
   }
@@ -418,7 +418,8 @@ function updateEndDate(budget, info) {
   var endDateIsInPast = (endDate < today);
 
   forEachBudgetCampaign(budget, function(campaign) {
-    Logger.log("Updating campaign %s (%s)", campaign.getName(), ""+campaign.getId());
+    Logger.log(Utilities.formatString(
+        "Updating campaign %s (%s)", campaign.getName(), ""+campaign.getId()));
 
     if ((endDate > today) && campaign.isPaused()) {
       // TODO: Warn only if unspent budget
@@ -464,7 +465,8 @@ function dayDiff(first, second) {
 }
 
 function pauseCampaign(campaign) {
-  Logger.log("Pausing campaign %s (%s)", campaign.getName(), ""+campaign.getId());
+  Logger.log(Utilities.formatString(
+      "Pausing campaign %s (%s)", campaign.getName(), ""+campaign.getId()));
 
   if (campaign.isPaused()) {
     Logger.log('Already paused');
@@ -472,9 +474,9 @@ function pauseCampaign(campaign) {
   }
 
   if (campaign.isEnabled()) {
-    Logger.log(
+    Logger.log(Utilities.formatString(
         'Changing status of campaign %s (%s) to PAUSED', campaign.getName(),
-        campaign.getId());
+        campaign.getId()));
     if (!isDryRun()) {
       campaign.pause();
     }
@@ -513,14 +515,14 @@ function checkYesterdaysSpend(budget, info) {
     var yesterdaysSpend = budget.getStatsFor("YESTERDAY").getCost();
     var yesterdaysBudget = budget.getAmount();
     if (yesterdaysSpend > yesterdaysBudget) {
-      Logger.log(
+      Logger.log(Utilities.formatString(
           'Yesterday, there was %.1f%% overspend (%.2f/%.2f).',
           (yesterdaysSpend / yesterdaysBudget - 1) * 100, yesterdaysSpend,
-          yesterdaysBudget);
+          yesterdaysBudget));
       var correctionRatio = yesterdaysBudget / yesterdaysSpend;
-      Logger.log(
+      Logger.log(Utilities.formatString(
           'So today, decreasing ideal budget (%.2f) by %.1f%%',
-          info.estimatedDailyBudget, (1 - correctionRatio) * 100);
+          info.estimatedDailyBudget, (1 - correctionRatio) * 100));
       info.estimatedDailyBudget *= correctionRatio;
     }
   } else if (info.endDate === todaysDate8() &&
@@ -559,9 +561,9 @@ function updateDailyBudget(budget, info) {
   info.spentToDate =
       (info.startDate > statsEndDate)
       ? 0 : budget.getStatsFor(info.startDate, statsEndDate).getCost();
-  Logger.log('%.2f spent to date', info.spentToDate);
+  Logger.log(Utilities.formatString('%.2f spent to date', info.spentToDate));
   info.budgetRemaining = info.totalBudget - info.spentToDate;
-  Logger.log('%.2f remaining', info.budgetRemaining);
+  Logger.log(Utilities.formatString('%.2f remaining', info.budgetRemaining));
 
   if (info.inactive) {
     Logger.log("Budget entry is inactive");
@@ -589,9 +591,9 @@ function updateDailyBudget(budget, info) {
   checkYesterdaysSpend(budget, info);
 
   if (budget.getAmount() != info.estimatedDailyBudget) {
-    Logger.log(
+    Logger.log(Utilities.formatString(
         'Changing amount of budget %s (%s) from $%.2f to $%.2f', info.name,
-        budget.getId(), budget.getAmount(), info.estimatedDailyBudget);
+        budget.getId(), budget.getAmount(), info.estimatedDailyBudget));
     if (!isDryRun()) {
       budget.setAmount(info.estimatedDailyBudget);
     }
