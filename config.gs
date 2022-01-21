@@ -33,12 +33,20 @@ var NUMBER_FORMATS = {
 // You can find the spreadsheet ID in a Google Sheets URL:
 // https://docs.google.com/spreadsheets/d/spreadsheetId/edit#gid=0
 var SPREADSHEET_ID = null;
+
+// If set to true, budget protector will run in Test mode. Check README #Test
+// Mode for more details
+// Set to false to update budgets
 var DRY_RUN = true;
+
 // ACCOUNT_IDS can be empty; if empty, it will check all accounts
 var ACCOUNT_IDS = ['000-000-0000', '000-000-0001']
+
 // SHEET_NAME is optional; if not specified, the active sheet is used.
 var SHEET_NAME = null;
-var UNDERSPEND_THRESHOLD = 0.5;
+
+var UNDERSPEND_THRESHOLD = 0.95;
+
 // How to calculate the daily budget of a campaign on its last day.
 // Possible values:
 //   NORMAL: Like any other day (i.e., permit overspend correction).
@@ -47,8 +55,11 @@ var UNDERSPEND_THRESHOLD = 0.5;
 //   PREVENT_OVERSPEND: Try to ensure that the total budget is not overspent
 //     by setting the daily budget to a fraction of the remaining amount.
 var LAST_DAY_STRATEGY = 'NORMAL';
-var TECH_TELCO_THRESHOLD = 0.95;
+
+// spreadsheet formatting
 var OPTIONS = {
   currencyFormat: NUMBER_FORMATS.DOLLAR_X,
   dateFormat: NUMBER_FORMATS.YYYY_MM_DD
+  // locale: 'en_US',
+  // timeZone: 'Asia/Kuala_Lumpur',
 }
