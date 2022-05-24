@@ -119,13 +119,13 @@ function initSheet_(sheet) {
     Logger.log('Sheet already exists and ready; skipping');
     return;
   } else if (ncols !== 0) {
-    Logger.warn('Expected 8 or 9 columns, found %s; skipping', '' + ncols);
+    Logger.log('Expected 8 or 9 columns, found %s; skipping', '' + ncols);
     return;
   }
 
   var nrows = sheet.getLastRow();
   if (nrows !== 0) {
-    Logger.warn('Sheet already contains %s rows; skipping', '' + nrows);
+    Logger.log('Sheet already contains %s rows; skipping', '' + nrows);
     return;
   }
 
